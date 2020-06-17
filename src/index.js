@@ -3,30 +3,26 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 // 실행순서: Game -> Board -> Square 9번 실행
-class Square extends React.Component {    
+function Square(props) {
 
-    // Square 컴포넌트를 클릭한 것을 “기억하게” 만들어 “X” 표시를 채워 넣으려고 합니다. 무언가를 “기억하기”위해 component는 state를 사용합니다.
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: null,
-        };
-    }
-    
-    render() {
+    // 부모로부터 전달받기 때문에 더 이상 Square가 기억할 필요가 없다!
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         value: null,
+    //     };
+    // }
+
     console.log("Square");
-        
-      return (
-          // 이 버튼을 누르면 onClick 안에 있는 함수가 발동된다.
-          <button
-              className="square"
-              onClick={() => this.props.onClick()}  // 부모가 준 onClick() 함수
-          >
-              {this.props.value}
-          </button>
-      );
-    }
-  }
+
+    return (
+        // 이 버튼을 누르면 onClick 안에 있는 함수가 발동된다. (부모가 준 onClick 함수 사용)
+        // 함수형으로 변경하면서 () => this.props.onClick()가 변경되었다.
+        <button className="square" onClick={props.onClick}>
+            {props.value}
+        </button>
+    );
+}
   
 class Board extends React.Component {
 
@@ -35,14 +31,19 @@ class Board extends React.Component {
         super(props);
         this.state = {
             squares: Array(9).fill(null),
+            xIsNext: true,  // 플레이어가 수를 둘 때마다 xIsNext (boolean 값)이 뒤집혀 다음 플레이어가 누군지 결정
         };
     }
 
     // 따로 뺀 함수 (클릭시 발동)
     handleClick(i) {
         const squares = this.state.squares.slice();
-        squares[i] = 'X';
-        this.setState({ squares: squares });
+        squares[i] = this.state.xIsNext ? 'X' : 'O';  // xIsNext 값에 따라 X와 O를 결정
+        
+        this.setState({
+            squares: squares,
+            xIsNext: !this.state.xIsNext,
+        });
     }
 
     renderSquare(i) {
@@ -54,10 +55,10 @@ class Board extends React.Component {
             />
         );
     }
-  
+
     render() {
       console.log("Board");
-      const status = 'Next player: X';
+      const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
   
       return (
         <div>
