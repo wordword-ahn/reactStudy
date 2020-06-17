@@ -57,8 +57,18 @@ class Board extends React.Component {
     }
 
     render() {
-      console.log("Board");
-      const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+        console.log("Board");
+
+        const winner = calculateWinner(this.state.squares);
+
+        let status;  // 승리한 경우 승리 문구 띄우기
+        if (winner) {
+            status = 'Winner: ' + winner;
+        } 
+        
+        else {
+            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+        }
   
       return (
         <div>
@@ -101,6 +111,32 @@ class Board extends React.Component {
     }
   }
   
+
+  // ================================================
+  // 승부가 나는 때와 더 이상 둘 곳이 없을 때를 알려주는 도우미 함수
+  function calculateWinner(squares) {
+    const lines = [
+      [0, 1, 2],  // 가로 1줄
+      [3, 4, 5],  // 가로 2줄
+      [6, 7, 8],  // 가로 3줄
+      [0, 3, 6],  // 세로 1줄
+      [1, 4, 7],  // 세로 2줄
+      [2, 5, 8],  // 세로 3줄
+      [0, 4, 8],  // 왼쪽 대각선 1줄
+      [2, 4, 6],  // 우측 대각선 1줄
+    ];
+
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i];
+      
+      // 1줄 전체가 OOO, XXX 이렇게 되면 반환
+      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+        return squares[a];
+      }
+    }
+
+    return null;
+  }
   // ========================================
   
   ReactDOM.render(
