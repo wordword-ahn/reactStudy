@@ -2,11 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-class Square extends React.Component {
+// 실행순서: Game -> Board -> Square 9번 실행
+class Square extends React.Component {    
     render() {
+    console.log("Square");
+        
       return (
         <button className="square">
-          {/* TODO */}
+          {/* 값 표시 */}
+          {this.props.value}
         </button>
       );
     }
@@ -14,10 +18,12 @@ class Square extends React.Component {
   
   class Board extends React.Component {
     renderSquare(i) {
-      return <Square />;
+        // Square에 prop을 전달하기
+        return <Square value={i} />;
     }
   
     render() {
+      console.log("Board");
       const status = 'Next player: X';
   
       return (
@@ -45,6 +51,8 @@ class Square extends React.Component {
   
   class Game extends React.Component {
     render() {
+      console.log("Game");
+
       return (
         <div className="game">
           <div className="game-board">
