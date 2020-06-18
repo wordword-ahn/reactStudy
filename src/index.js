@@ -38,8 +38,14 @@ class Board extends React.Component {
     // 따로 뺀 함수 (클릭시 발동)
     handleClick(i) {
         const squares = this.state.squares.slice();
+
+        // 누군가 승리하거나 || 이미 그 칸이 채워져 있는 경우 클릭 무시
+        if (calculateWinner(squares) || squares[i]) {
+            return;
+        }
+
         squares[i] = this.state.xIsNext ? 'X' : 'O';  // xIsNext 값에 따라 X와 O를 결정
-        
+
         this.setState({
             squares: squares,
             xIsNext: !this.state.xIsNext,
