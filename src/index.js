@@ -6,8 +6,6 @@ import './index.css';
 function Square(props) {
 
     return (
-        // 이 버튼을 누르면 부모가 준 onClick 함수 사용
-        // 함수형으로 변경하면서 () => this.props.onClick()가 변경되었다.
         <button className="square" onClick={props.onClick}>
             {props.value}
         </button>
@@ -112,7 +110,6 @@ class Board extends React.Component {
           '시작지점';
 
         return (
-          // key : 과거의 이동 정보는 이동의 순차적인 숫자를 고유한 ID로 가짐
           <li key = {move}>
             <button onClick={() => this.jumpTo(move)}> {desc} </button>
           </li>
